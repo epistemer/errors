@@ -3,9 +3,22 @@
 Newest first. Every working session adds an entry: what landed, the decisions
 taken for you, what's next, and what's waiting on you.
 
+## 2026-11-14: v0.1.0 (M3.3)
+
+- **Landed:** PR #3 merged after CI passed on all 12 jobs; `v0.1.0` tagged
+  on `d3760da` and pushed. `go get github.com/epistemer/errors@v0.1.0`
+  resolves through proxy.golang.org, and a clean module builds and runs
+  against it.
+- **Decided for you:** nothing.
+- **Next:** the i18n amendment (interface §9), in i18n's repository under
+  its terms; its text comes back to you there. Then `v1.0.0` waits for zp's
+  business code to run on it (brief §11).
+- **Waiting on you:** nothing. GitHub auto-merge is off for this repository;
+  merges wait for CI and are done by hand, which works.
+
 ## 2026-11-14: the release docs and the skill (M3)
 
-- **Landed** (PR #3):
+- **Landed** (PR #3, merged):
   - Godoc examples that run as tests, and a README quickstart whose output
     is pasted from a real run in Arabic against i18n `v0.2.0`.
   - [api-review.md](api-review.md): every exported identifier against
