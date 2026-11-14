@@ -3,9 +3,29 @@
 Newest first. Every working session adds an entry: what landed, the decisions
 taken for you, what's next, and what's waiting on you.
 
+## 2026-11-14: the release docs and the skill (M3)
+
+- **Landed** (PR #3):
+  - Godoc examples that run as tests, and a README quickstart whose output
+    is pasted from a real run in Arabic against i18n `v0.2.0`.
+  - [api-review.md](api-review.md): every exported identifier against
+    interface §4, with the test that checks it. No changes or amendments.
+  - CHANGELOG for `v0.1.0`.
+  - [Review 0003](reviews/0003-m3-release.md) by Gemini 3.8 Flash (High),
+    about 223k tokens: eleven findings, ten accepted and one in part. They
+    were doc wording and three missing tests, now added.
+  - Outside the repository: the global skill `~/.claude/skills/errors/`,
+    and errors added to epistemer's global CLAUDE.md beside the other four
+    packages.
+- **Next:** merge PR #3 once CI is green, tag `v0.1.0`, and check that
+  `go get github.com/epistemer/errors@v0.1.0` resolves through the module
+  proxy (M3.3). After that: the i18n amendment (interface §9), in i18n's
+  repository.
+- **Waiting on you:** nothing.
+
 ## 2026-11-14: the package (M1, M2)
 
-- **Landed** (PR #2): the whole of interface §4 and §5. `Key`–`Key3`, the
+- **Landed** (PR #2, merged): the whole of interface §4 and §5. `Key`–`Key3`, the
   declaration checks and meta; occurrences; the walk (`Public`, `T`,
   `All`); arguments and composition; `KindOf`; the standard library's API;
   kinds. Built from brief §8's sketches with review 0001's changes, each
