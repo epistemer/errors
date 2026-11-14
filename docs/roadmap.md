@@ -80,8 +80,8 @@
 
 ## Alongside
 
-- **i18n amendment** (interface §9), in the i18n repository under its own
-  terms, released as i18n `v0.3.0`. This package doesn't wait for it.
+- ☑ **i18n amendment** (interface §9), in the i18n repository under its own
+  terms: released as i18n `v0.3.0` on 2026-11-14 (epistemer/i18n PR #11).
 
 ## After v0.1.0 (backlog)
 

@@ -3,6 +3,19 @@
 Newest first. Every working session adds an entry: what landed, the decisions
 taken for you, what's next, and what's waiting on you.
 
+## 2026-11-14: the i18n amendment (alongside)
+
+- **Landed, in i18n:** the amendment of interface §9, approved by epistemer,
+  released as i18n `v0.3.0` (epistemer/i18n PR #11): a `Ter` argument
+  renders in the request's locale. errors' tests pass unchanged against
+  `v0.3.0` with `-race`; go.mod stays on `v0.2.0`, the lowest it needs.
+- **Skills:** the `errors` skill names both i18n versions and says a
+  wrapped error passed to a plain i18n key still prints `Error()`; the
+  `i18n` skill's note on errors was corrected to say the same.
+- **Next:** nothing on the roadmap. `v1.0.0` waits for zp's business code
+  to run on errors (brief §11), in zp's own session.
+- **Waiting on you:** nothing.
+
 ## 2026-11-14: v0.1.0 (M3.3)
 
 - **Landed:** PR #3 merged after CI passed on all 12 jobs; `v0.1.0` tagged
