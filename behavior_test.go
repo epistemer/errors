@@ -185,3 +185,106 @@ func TestReviewChanges(t *testing.T) {
 		}
 	})
 }
+
+type user struct{}
+
+var (
+	ErrUserMissing = errors.Key1[*user]("errors.test.user", "missing user %v")
+	ErrAnyArg      = errors.Key1[any]("errors.test.any", "value %v")
+	ErrTwoErrs     = errors.Key2[error, error]("errors.test.two", "%s, %s")
+	ErrPercent     = errors.Key("errors.test.percent", "100% done")
+)
+
+// Review 0002's findings: nils by declared type, and rules §7 doesn't reach.
+func TestRules(t *testing.T) {
+	ar, _ := contexts(t)
+
+	t.Run("nil pointers by declared type", func(t *testing.T) {
+		if got := errors.T(ar, ErrUserMissing.With(nil)); got != "missing user " {
+			t.Errorf("nil *user: T = %q", got)
+		}
+		if got := errors.T(ar, ErrAnyArg.With((*fs.PathError)(nil))); got != "value " {
+			t.Errorf("nil error in an any slot: T = %q", got)
+		}
+		if got := ErrUserMissing.With(nil).Error(); got != "missing user <nil>" {
+			t.Errorf("nil *user: Error() = %q", got)
+		}
+	})
+
+	t.Run("Public", func(t *testing.T) {
+		if errors.Public(errors.New("x")) != errors.Unknown || errors.Public(errors.New("x")).K() != "errors.unknown" {
+			t.Error("a private error's Public must be Unknown")
+		}
+		err := errors.Join(errors.New("x"), fmt.Errorf("a: %w", ErrDup), ErrOrderNotFound)
+		if errors.Public(err) != ErrDup {
+			t.Error("Public must be the first public error in pre-order")
+		}
+	})
+
+	t.Run("All stops when asked", func(t *testing.T) {
+		n := 0
+		for range errors.All(errors.Join(ErrDup, ErrOrderNotFound, ErrLowBalance)) {
+			n++
+			break
+		}
+		if n != 1 {
+			t.Errorf("All yielded %d after break", n)
+		}
+		for range errors.All(nil) {
+			t.Error("All(nil) yielded")
+		}
+	})
+
+	t.Run("KindOf", func(t *testing.T) {
+		tests := []struct {
+			err  error
+			want errors.Kind
+		}{
+			{nil, errors.Internal},
+			{ErrDup, errors.Conflict},
+			{ErrTwoErrs.With(ErrOrderNotFound, ErrDup), errors.NotFound},
+			{ErrTwoErrs.With(nil, ErrDup), errors.Conflict},
+			{ErrPaymentDeclined.Wrap(ErrDup, ErrOrderNotFound), errors.NotFound},
+			{ErrPaymentDeclined.Wrap(ErrDup, errors.New("x")), errors.Internal},
+		}
+		for _, tt := range tests {
+			if got := errors.KindOf(tt.err); got != tt.want {
+				t.Errorf("KindOf(%v) = %v, want %v", tt.err, got, tt.want)
+			}
+		}
+	})
+
+	t.Run("identity", func(t *testing.T) {
+		a, b := ErrRequired.With(L10nName), ErrRequired.With(L10nName)
+		if errors.Is(a, b) {
+			t.Error("two occurrences must not be Is each other")
+		}
+		if !errors.Is(a, ErrRequired) {
+			t.Error("an occurrence must be Is its declaration")
+		}
+	})
+
+	t.Run("accessors", func(t *testing.T) {
+		occ := ErrTooHigh.With(L10nAmount, 1)
+		tk, ok := occ.(i18n.TKer)
+		if !ok || tk.K() != "errors.form.too_high" || ErrTooHigh.K() != "errors.form.too_high" {
+			t.Error("K")
+		}
+		if k, ok := occ.(interface{ Kind() errors.Kind }); !ok || k.Kind() != errors.Invalid || ErrTooHigh.Kind() != errors.Invalid || ErrPaymentDeclined.Kind() != 0 {
+			t.Error("Kind")
+		}
+		if tk.T(ar, "ignored", 99) != tk.T(ar) || ErrDup.T(ar, "ignored") != ErrDup.T(ar) {
+			t.Error("T must ignore its arguments")
+		}
+	})
+
+	t.Run("Key's text is never formatted", func(t *testing.T) {
+		err := ErrPercent.Wrap(errors.New("x"))
+		if got := err.Error(); got != "100% done: x" {
+			t.Errorf("Error() = %q", got)
+		}
+		if got := errors.T(ar, err); got != "100% done" {
+			t.Errorf("T = %q", got)
+		}
+	})
+}

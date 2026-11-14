@@ -8,33 +8,28 @@ import (
 )
 
 // people prepares arguments for people: an error shows as its public text, a
-// label in the same locale. An error's Error() never reaches them. A nil in
-// an error parameter fills its slot with Unknown's text; other nils are "".
+// label in the same locale. An error's Error() never reaches them. A nil, or
+// a nil pointer, fills an error parameter's slot with Unknown's text, and
+// any other slot with "".
 func (c *core) people(ctx context.Context, args []any) []any {
 	if len(args) == 0 {
 		return nil
 	}
 	out := make([]any, len(args))
 	for i, a := range args {
-		switch v := a.(type) {
-		case error:
-			if isNil(v) {
-				out[i] = Unknown.T(ctx)
-			} else {
-				out[i] = T(ctx, v)
-			}
-		case i18n.Ter:
-			if isNil(v) {
-				out[i] = ""
-			} else {
-				out[i] = v.T(ctx)
-			}
-		case nil:
+		if isNil(a) {
 			if c.ts[i].Implements(errorType) {
 				out[i] = Unknown.T(ctx)
 			} else {
 				out[i] = ""
 			}
+			continue
+		}
+		switch v := a.(type) {
+		case error:
+			out[i] = T(ctx, v)
+		case i18n.Ter:
+			out[i] = v.T(ctx)
 		default:
 			out[i] = a
 		}
@@ -43,26 +38,22 @@ func (c *core) people(ctx context.Context, args []any) []any {
 }
 
 // forLogs prepares arguments for Error(): an error as its Error(), a label
-// as the code's text.
+// as the code's text, and a nil pointer as nil.
 func forLogs(args []any) []any {
 	if len(args) == 0 {
 		return nil
 	}
 	out := make([]any, len(args))
 	for i, a := range args {
+		if isNil(a) {
+			out[i] = nil
+			continue
+		}
 		switch v := a.(type) {
 		case error:
-			if isNil(v) {
-				out[i] = nil
-			} else {
-				out[i] = v.Error()
-			}
+			out[i] = v.Error()
 		case i18n.Ter:
-			if isNil(v) {
-				out[i] = nil
-			} else {
-				out[i] = v.T(context.Background())
-			}
+			out[i] = v.T(context.Background())
 		default:
 			out[i] = a
 		}

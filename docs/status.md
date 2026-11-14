@@ -3,6 +3,32 @@
 Newest first. Every working session adds an entry: what landed, the decisions
 taken for you, what's next, and what's waiting on you.
 
+## 2026-11-14: the package (M1, M2)
+
+- **Landed** (PR #2): the whole of interface §4 and §5. `Key`–`Key3`, the
+  declaration checks and meta; occurrences; the walk (`Public`, `T`,
+  `All`); arguments and composition; `KindOf`; the standard library's API;
+  kinds. Built from brief §8's sketches with review 0001's changes, each
+  type's methods written out.
+  - Tests: §7's acceptance tests verbatim (`acceptance_test.go`), the
+    checker's 14 cases and meta (internal), the standard API and every kind,
+    `Error()` unchanged by Arabic and English edits, review 0001's changes,
+    and `TestRules`. `internal/conflicttest`, a test binary of its own,
+    shows `Load` refusing one key with two kinds and one with two argument
+    lists. Coverage about 91%.
+  - [Review 0002](reviews/0002-m1-m2.md) by Gemini 4 Hydrogen (Medium),
+    about 47k tokens (Argon cooling down): five findings, three accepted.
+    The bug it found: a nil pointer of a type that is neither an error nor
+    a label reached people as `%!s(*User=<nil>)`.
+- **Decided for you:**
+  - The checker reports an unused argument as unused (fmt's `%!(EXTRA …)`
+    used to make it "can't format").
+  - M1.1 and M1.2 done here, not by Gemini: the spike had written them.
+    Delegating would have cost a worktree and a review for a dozen lines.
+- **Next:** M3: examples, the README quickstart, the API review, `v0.1.0`,
+  and the skill.
+- **Waiting on you:** nothing.
+
 ## 2026-11-14: the repository starts (M0.1, M0.2 drafted)
 
 - **Landed** (PR for M0):
