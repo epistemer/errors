@@ -60,11 +60,12 @@ people: حدث خطأ ما (errors.unknown, 500)
 
 - `errors.T(ctx, err)` is the text people see; `errors.All(err)` lists one
   per branch, for forms.
-- `errors.Public(err).K()` is a stable code for an API, and
-  `errors.KindOf(err).Status()` its HTTP status.
-- `Wrap` keeps a cause people don't see: `ErrOrderNotSaved.Wrap(err)` logs
-  the driver's error and keeps it for `errors.Is`, and shows people only its
-  own text.
+- For a non-nil `err`, `errors.Public(err).K()` is a stable code for an API
+  (`""` for a public error that has no key), and
+  `errors.KindOf(err).Status()` its HTTP status. `Public(nil)` is nil.
+- `Wrap` keeps a cause people don't see: a declaration's `Wrap(err)` logs the
+  driver's error and keeps it for `errors.Is`, and shows people only its own
+  text.
 - Texts are lowercase with no final period, like Go error strings, so they
   compose. Capitalize a message shown alone in the UI, with CSS
   `::first-letter`.
@@ -98,7 +99,12 @@ var (
 )
 
 func main() {
-	db, err := bolt.Open(filepath.Join(os.TempDir(), "quickstart.db"), 0o600, nil)
+	dir, err := os.MkdirTemp("", "quickstart")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer os.RemoveAll(dir)
+	db, err := bolt.Open(filepath.Join(dir, "i18n.db"), 0o600, nil)
 	if err != nil {
 		log.Fatal(err)
 	}

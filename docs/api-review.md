@@ -20,8 +20,8 @@ Every exported identifier of package `errors`, as `go doc -all` lists it on
 | kinds as options | §5.8: a repeated or unknown kind panics | `TestDeclareRefusesBadKinds` |
 | meta | §5.9: stable bytes, none for a plain `Key`, `Load` refuses two meanings | `TestMeta`; `internal/conflicttest` |
 | `Option` | an interface with an unexported method; `Kind` is one | `TestKinds` (compile-time assignment) |
-| `Def`: `Error`, `K`, `T`, `Kind`, `Wrap` | as §4; `Wrap(nil)` is `d`; a nil pointer is nil | §7 `TestShow`; `TestRules/accessors`; `TestReviewChanges/nil_and_nil_pointers` |
-| `Def1`–`Def3`: `Error`, `K`, `T`, `Kind`, `With`, `Wrap` | as §4 with review 0001's typed `T`; not an `i18n.Ter` | `TestReviewChanges` (bare declarations, typed `T`, `Key3`); `TestRules/accessors` |
+| `Def`: `Error`, `K`, `T`, `Kind`, `Wrap` | as §4; `Wrap(nil)` is `d`, also for a nil pointer as the cause | §7 `TestShow`; `TestRules/accessors`; `TestReviewChanges/nil_and_nil_pointers` |
+| `Def1`–`Def3`: `Error`, `K`, `T`, `Kind`, `With`, `Wrap` | as §4 with review 0001's typed `T`; not an `i18n.Ter` | `TestReviewChanges` (bare declarations, typed `T`, `Key3`); `TestRules/accessors`, `TestRules/Wrap_without_a_cause` |
 
 ## Showing (§4, §5.1–§5.7)
 
@@ -32,14 +32,14 @@ Every exported identifier of package `errors`, as `go doc -all` lists it on
 | `T` | `Public(err).T(ctx)`, `""` for nil | §7 `TestShow`, `TestAll`, `TestNil`, `TestWhiteLabel` |
 | `All` | §5.1: outermost public error per branch; first is `Public` | §7 `TestAll`; `TestRules/All_stops_when_asked` |
 | `KindOf` | §5.7: own kind, else first error argument's, else `Internal`; `Internal` for nil; `Wrap` lends nothing | §7 `TestShow`; `TestRules/KindOf` |
-| occurrences (unexported) | §4: `error`, `i18n.TKer`, `Kind()`, `Is`, `Unwrap() []error`; §5.2, §5.3, §5.6 | §7 `TestIdentity`, `TestShow`, `TestNoPrivateTextReachesPeople`; `TestErrorIgnoresEdits`; `TestRules/identity` |
+| occurrences (unexported) | §4: `error`, `i18n.TKer`, `Kind()`, `Is`, `Unwrap() []error`; §5.2, §5.3, §5.6 | §7 `TestIdentity`, `TestShow`, `TestNoPrivateTextReachesPeople`; `TestErrorIgnoresEdits`; `TestRules/identity`, `TestRules/Unwrap` |
 
 ## Kinds (§4, §5.7)
 
 | Identifier | Interface | Checked |
 |---|---|---|
 | `Kind` and its eight constants | values, names and statuses of §5.7's table | `TestKinds`, every kind and the zero `Kind` |
-| `Kind.Status`, `Kind.String` | 500 and `"unspecified"` for the zero `Kind` | `TestKinds` |
+| `Kind.Status`, `Kind.String` | 500 and `"unspecified"` for the zero `Kind`; `Kind(n)` and 500 outside the eight | `TestKinds` |
 
 ## Findings
 
@@ -53,4 +53,6 @@ Every exported identifier of package `errors`, as `go doc -all` lists it on
 4. **`Unknown` is a variable**, as §4 declares it. Review 0001 finding 9
    kept it so; reassigning it is the app's bug, like reassigning `io.EOF`.
 
-None needs a change or an amendment.
+None needs a change or an amendment. A cross-model review of this
+document, the README and the examples (Gemini 3.8 Flash High) found claims
+the tables didn't support; the tests named in them were added.

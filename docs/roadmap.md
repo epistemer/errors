@@ -74,8 +74,8 @@
 
 | ✓ | ID | Item | Done when |
 |---|----|------|-----------|
-| ☐ | M3.1 | Godoc examples, and a README with a quickstart | The examples run as tests, and the quickstart's output is pasted from a real run |
-| ☐ | M3.2 | API review of every exported identifier against the interface | A written review lists each one and how it was checked, and its findings are fixed or filed |
+| ☑ | M3.1 | Godoc examples, and a README with a quickstart | The examples run as tests, and the quickstart's output is pasted from a real run |
+| ☑ | M3.2 | API review of every exported identifier against the interface | A written review lists each one and how it was checked, and its findings are fixed or filed |
 | ☐ | M3.3 | CHANGELOG, the `v0.1.0` tag, and a global Claude Code skill (`~/.claude/skills/errors/`) like cfgx's, i18n's and genx's | `go get github.com/epistemer/errors@v0.1.0` works through the module proxy |
 
 ## Alongside

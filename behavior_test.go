@@ -70,6 +70,9 @@ func TestKinds(t *testing.T) {
 			t.Errorf("Kind %d = %q %d, want %q %d", tt.k, tt.k.String(), tt.k.Status(), tt.name, tt.status)
 		}
 	}
+	if k := errors.Kind(99); k.String() != "Kind(99)" || k.Status() != 500 {
+		t.Errorf("Kind(99) = %q %d", k.String(), k.Status())
+	}
 	var _ errors.Option = errors.NotFound
 }
 
@@ -285,6 +288,24 @@ func TestRules(t *testing.T) {
 		}
 		if got := errors.T(ar, err); got != "100% done" {
 			t.Errorf("T = %q", got)
+		}
+	})
+
+	t.Run("Wrap without a cause", func(t *testing.T) {
+		w, o := ErrPaymentDeclined.Wrap(nil, ErrDup), ErrPaymentDeclined.With(ErrDup)
+		if w.Error() != o.Error() || errors.T(ar, w) != errors.T(ar, o) || errors.KindOf(w) != errors.KindOf(o) || !errors.Is(w, ErrDup) {
+			t.Error("Def1.Wrap(nil, a) must behave as With(a)")
+		}
+	})
+
+	t.Run("Unwrap", func(t *testing.T) {
+		u, ok := ErrTwoErrs.Wrap(sql.ErrConnDone, ErrDup, nil).(interface{ Unwrap() []error })
+		if !ok {
+			t.Fatal("an occurrence must have Unwrap() []error")
+		}
+		got := u.Unwrap()
+		if len(got) != 2 || got[0] != error(ErrDup) || got[1] != sql.ErrConnDone {
+			t.Errorf("Unwrap = %v, want the error arguments, then the cause", got)
 		}
 	})
 }

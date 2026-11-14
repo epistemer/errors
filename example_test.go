@@ -63,7 +63,7 @@ func Example() {
 
 // An error argument composes: its public text fills the slot, translators
 // place it, and it stays a cause for Is and KindOf.
-func ExampleKey1() {
+func ExampleDef1_With() {
 	err := ErrDeclined.With(fmt.Errorf("debit wallet 7: %w", ErrNoFunds))
 
 	fmt.Println(err)

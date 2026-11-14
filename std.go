@@ -24,8 +24,9 @@ func As(err error, target any) bool { return stderrors.As(err, target) }
 func AsType[E error](err error) (E, bool) { return stderrors.AsType[E](err) }
 
 // Unwrap returns the result of err's Unwrap method, as the standard
-// library's [errors.Unwrap] does. It is nil for an error with several
-// causes, an occurrence among them.
+// library's [errors.Unwrap] does. It is nil for an error whose Unwrap
+// returns a slice, as Join's errors and every occurrence do, even one with a
+// single cause: use Is, As or AsType.
 func Unwrap(err error) error { return stderrors.Unwrap(err) }
 
 // Join returns an error that wraps errs, as the standard library's

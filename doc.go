@@ -8,9 +8,10 @@
 //
 // Error() is the code's English text. It gains context with each wrap and
 // may contain internals; it is for logs. T(ctx) is the text people see. It
-// is picked from the error tree, not built up by wrapping: Public, T and All
-// walk the tree in the order errors.As uses and take the first error that
-// implements i18n.Ter, without looking inside it. Any wrapper works (%w, two
+// is picked from the error tree, not built up by wrapping: Public and T walk
+// the tree in the order errors.As uses and take the first error that
+// implements i18n.Ter, without looking inside it; All yields the outermost
+// such error on each branch. Any wrapper works (%w, two
 // %ws, Join, third-party wrappers) without knowing about i18n, and people
 // never see Error() text.
 //

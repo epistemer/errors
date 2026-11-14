@@ -12,9 +12,10 @@ The first release: the whole of the interface locked on 2026-11-14.
 
 - The standard library's API: `New`, `Is`, `As`, `AsType`, `Unwrap`, `Join`
   and `ErrUnsupported`, so an app imports one errors package.
-- Declarations: `Key`, `Key1`, `Key2` and `Key3`, each an i18n key with
-  meta of its kind and argument types. Texts are checked against their
-  argument types when declared.
+- Declarations: `Key`, and `Key1`, `Key2` and `Key3` for texts with typed
+  arguments, each an i18n key whose meta records its kind and argument
+  types. Texts with arguments are checked against their types when
+  declared; `Key`'s text is never formatted.
 - Occurrences from `With` and `Wrap`: `Error()` for logs, `T(ctx)` for
   people, an error argument composed into the outer message, and `Is` true
   for the declaration.
