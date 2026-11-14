@@ -14,10 +14,10 @@ A drop-in superset of the standard library's `errors`, with typed, composable
 declarations (`errors.Key1[error]("errors.checkout.failed", "checkout failed: %s")`)
 and an HTTP status per kind.
 
-**In design.** Nothing to use yet:
+**In development.** Nothing to use yet:
 
 - [ADR 0001](docs/adr/0001-two-messages.md): the design and why.
-- [docs/interface.md](docs/interface.md): the contract, waiting to be locked.
+- [docs/interface.md](docs/interface.md): the contract, locked 2026-11-14.
 - [docs/roadmap.md](docs/roadmap.md): the plan to `v0.1.0`, with a
   done-when for each item.
 - [docs/status.md](docs/status.md): the log of working sessions.

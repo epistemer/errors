@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Status | Proposed (accepted in design on 2026-11-14; final when the interface is locked) |
+| Status | Accepted (2026-11-14, with the interface lock) |
 | Date | 2026-11-14 |
 | Roadmap item | M0.2 |
 | Deciders | epistemer; proposed in a design session with Claude ([brief.md](../brief.md)) |

@@ -1,15 +1,12 @@
-# errors — Developer Interface (v1, draft)
+# errors — Developer Interface (v1, locked)
 
-> Status: **draft, waiting for epistemer to lock it.** Written on 2026-11-14
-> from the design brief ([brief.md](brief.md) §§3–7, unchanged in substance),
-> which epistemer accepted that day. Once locked, any change needs an
+> Status: **locked on 2026-11-14** by epistemer, with review 0001's typed
+> `T` for `Def1`–`Def3`. Written that day from the design brief
+> ([brief.md](brief.md) §§3–7), which epistemer accepted. Any change needs an
 > explicit amendment, recorded in §10. This document covers what a developer
 > writes and what they get back. Why it is shaped this way is
 > [ADR 0001](adr/0001-two-messages.md); the order of work is
 > [roadmap.md](roadmap.md).
->
-> Decisions marked **(Claude)** were settled while the brief was written and
-> can still be overturned before the lock.
 >
 > Section numbers follow the brief's, so its cross-references hold.
 
@@ -701,3 +698,4 @@ i18n's interface §5.2 gains one rule, recorded in its §13:
 |------|--------|
 | 2026-11-14 | Drafted from brief.md §§3–7; §8 from its §10, §9 from its §9 |
 | 2026-11-14 | From [review 0001](reviews/0001-design.md), made in place before the lock: `Def1`–`Def3` take a typed `T` and aren't `i18n.Ter`s, so one returned bare shows `Unknown` (§4, §5.3, §5.8); nil and nil pointers (§5.1, §5.3); a nil `error` argument fills its slot with `Unknown`; a repeated or unknown `Kind` panics (§5.8); `errors.Unwrap` of an occurrence (§5.5); rendering errors only through this package (§5.3); `All` yielding nothing and `Join` with mixed kinds (§6.3); `KindOf(nil)` (§4) |
+| 2026-11-14 | Locked by epistemer, with the typed `T` and the (Claude) decisions of §3 as written |

@@ -5,14 +5,13 @@ neozp's error package: errors with two messages, `Error()` for logs and
 
 - Read [docs/roadmap.md](docs/roadmap.md), then the newest entry of
   [docs/status.md](docs/status.md). The design is
-  [ADR 0001](docs/adr/0001-two-messages.md), the contract
+  [ADR 0001](docs/adr/0001-two-messages.md), the locked contract
   [docs/interface.md](docs/interface.md); [docs/brief.md](docs/brief.md) is
   the history before them, with the acceptance tests (§7) and checked
   sketches (§8).
-- Ownership is epistemer's to grant ([docs/ownership.md](docs/ownership.md)
-  holds the proposed terms, models'). Until it's granted, bring each
-  milestone to epistemer. API design and the interface lock are epistemer's
-  either way.
+- Claude owns this repository until v1.0.0, on the terms of
+  [docs/ownership.md](docs/ownership.md) (delegated 2026-11-14). API design
+  is epistemer's; the interface was locked by epistemer on 2026-11-14.
 - Load the `i18n` skill before touching anything that declares or renders a
   key.
 - zp (`/home/epistemer/zp`) is private and read-only. Keep its names out of

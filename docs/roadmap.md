@@ -1,18 +1,18 @@
 # errors — Roadmap to the first release
 
-> Status: **proposed plan**, written 2026-11-14 from [brief.md](brief.md)
+> Status: **accepted plan**, written 2026-11-14 from [brief.md](brief.md)
 > §12. Module: `github.com/epistemer/errors`.
 >
 > | Document | Answers |
 > |----------|---------|
 > | [ADR 0001](adr/0001-two-messages.md) | *What* the package does, and why that way |
-> | [interface.md](interface.md) | *What* an app writes and gets back (draft until locked in M0.2) |
+> | [interface.md](interface.md) | *What* an app writes and gets back (locked 2026-11-14) |
 > | this file | *In what order*, and *when each piece counts as done* |
 
 ## How to use this document
 
-- **Ownership.** Proposed: Claude owns errors until `v1.0.0`, on models'
-  terms ([ownership.md](ownership.md)). Not yet granted.
+- **Ownership.** Claude owns errors until `v1.0.0`, on models' terms
+  ([ownership.md](ownership.md), delegated 2026-11-14).
 - **IDs.** Every item has an ID (`M1.3`) and fits one PR or one focused
   session. Branch names, PR titles and commit subjects start with the ID.
 - **Interface first.** M0 ends with the lock of `docs/interface.md`. After
@@ -50,8 +50,8 @@
 
 | ✓ | ID | Item | Done when |
 |---|----|------|-----------|
-| ☐ | M0.1 | Module `github.com/epistemer/errors` (Go 1.26, MIT), `doc.go`, `CLAUDE.md`, and CI like i18n's | CI runs green on a PR |
-| ☐ | M0.2 | ADR 0001 (brief §§1–5), `docs/interface.md` (brief §§3–7), this roadmap, `docs/status.md`, and the brief as `docs/brief.md` | epistemer locks the interface |
+| ☑ | M0.1 | Module `github.com/epistemer/errors` (Go 1.26, MIT), `doc.go`, `CLAUDE.md`, and CI like i18n's | CI runs green on a PR |
+| ☑ | M0.2 | ADR 0001 (brief §§1–5), `docs/interface.md` (brief §§3–7), this roadmap, `docs/status.md`, and the brief as `docs/brief.md` | epistemer locks the interface |
 
 ## M1 — Declaring
 

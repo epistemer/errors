@@ -32,8 +32,8 @@ taken for you, what's next, and what's waiting on you.
   - A nil or nil pointer counts as nil; a nil `error` argument fills its
     slot with `Unknown`; a repeated or unknown `Kind` panics.
   - M0.1 done here rather than by Gemini: it was a copy of models' files.
-- **Next:** M1, once the interface is locked.
-- **Waiting on you:**
-  - Locking [interface.md](interface.md) (M0.2's done-when), with or
-    without review finding 2.
-  - Delegating ownership on the terms of [ownership.md](ownership.md).
+- **Decided by you (2026-11-14):** the interface is locked, with the typed
+  `T` of review finding 2 and the brief's (Claude) decisions as written;
+  ownership delegated on models' terms.
+- **Next:** M1.
+- **Waiting on you:** nothing.
