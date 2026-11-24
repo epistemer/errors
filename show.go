@@ -43,10 +43,11 @@ func All(err error) iter.Seq[i18n.TKer] {
 	}
 }
 
-// KindOf returns the kind of Public(err): its own when it declares one;
-// else, for an occurrence with error arguments, KindOf its first; else
-// Internal. KindOf(nil) is Internal. A cause given to Wrap never lends its
-// kind.
+// KindOf returns the kind of Public(err): its own when it declares one
+// (from a Kind() Kind method returning non-zero, or a Kind() string method
+// returning one of the eight kind names); else, for an occurrence with error
+// arguments, KindOf its first; else Internal. KindOf(nil) is Internal. A cause
+// given to Wrap never lends its kind.
 func KindOf(err error) Kind {
 	n := first(err)
 	if n == nil {
@@ -54,6 +55,11 @@ func KindOf(err error) Kind {
 	}
 	if k, ok := n.(interface{ Kind() Kind }); ok && k.Kind() != 0 {
 		return k.Kind()
+	}
+	if k, ok := n.(interface{ Kind() string }); ok {
+		if kind := kindByName(k.Kind()); kind != 0 {
+			return kind
+		}
 	}
 	if o, ok := n.(interface{ shownErrors() []error }); ok {
 		if errs := o.shownErrors(); len(errs) > 0 {

@@ -4,6 +4,15 @@ All notable changes to this module. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow
 [Semantic Versioning](https://semver.org/).
 
+## v0.2.0 (unreleased)
+
+### Added
+
+- `KindOf` recognizes a `Kind() string` method on public errors that returns one
+  of the eight kind names (`"internal"`, `"invalid"`, `"unauthenticated"`,
+  `"forbidden"`, `"not_found"`, `"conflict"`, `"rate_limited"`, `"unavailable"`),
+  so imported packages can declare kinds without importing `errors` (amendment E1).
+
 ## [v0.1.0] - 2026-11-14
 
 The first release: the whole of the interface locked on 2026-11-14.

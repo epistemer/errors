@@ -3,6 +3,14 @@
 Newest first. Every working session adds an entry: what landed, the decisions
 taken for you, what's next, and what's waiting on you.
 
+## 2026-11-24: amendment E1, Kind() string (v0.2.0)
+
+- **Landed:** amendment E1 in `show.go` and `kind.go`. `KindOf` reads a
+  `Kind() string` method returning any of the eight kind names.
+- **Decided for you:** nothing.
+- **Next:** `v0.2.0` release when approved.
+- **Waiting on you:** nothing.
+
 ## 2026-11-14: the i18n amendment (alongside)
 
 - **Landed, in i18n:** the amendment of interface §9, approved by epistemer,

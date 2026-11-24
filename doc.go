@@ -35,8 +35,9 @@
 // # Showing
 //
 // T(ctx, err) renders the error people see, All lists one per branch for
-// forms, and KindOf gives its Kind and so its HTTP status. An error with no
-// public part shows as Unknown.
+// forms, and KindOf gives its Kind (from a Kind() Kind or Kind() string
+// method) and so its HTTP status. An error with no public part shows as
+// Unknown.
 //
 // The contract is docs/interface.md in the repository.
 package errors
