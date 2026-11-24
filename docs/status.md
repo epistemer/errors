@@ -22,6 +22,8 @@ taken for you, what's next, and what's waiting on you.
   cooling down), about 173k tokens: no finding in this repository beyond
   the `Wrap` test. An end-to-end check against i18n's branch gave 404, 400
   and 409 for i18n's errors.
+- **Released:** [PR #4](https://github.com/epistemer/errors/pull/4) merged
+  on green (12 of 12 checks), and `v0.2.0` tagged, with i18n `v0.4.0`.
 - **Waiting on you:** nothing.
 
 ## 2026-11-14: the i18n amendment (alongside)
