@@ -35,6 +35,17 @@ var kinds = [...]struct {
 
 func (k Kind) valid() bool { return k != 0 && int(k) < len(kinds) }
 
+// kindByName returns the Kind for name as Kind.String() spells it, or 0
+// when none matches (including "unspecified").
+func kindByName(name string) Kind {
+	for k := Kind(1); int(k) < len(kinds); k++ {
+		if kinds[k].name == name {
+			return k
+		}
+	}
+	return 0
+}
+
 // Status returns the kind's HTTP status: 500 for the zero Kind.
 func (k Kind) Status() int {
 	if int(k) < len(kinds) {

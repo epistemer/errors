@@ -101,9 +101,20 @@ func TestErrorIgnoresEdits(t *testing.T) {
 }
 
 var (
-	ErrThree = errors.Key3[int, i18n.Ter, error]("errors.test.three", "row %d, %s: %s")
-	ErrDup   = errors.Key("errors.test.dup", "duplicate", errors.Conflict)
+	ErrThree            = errors.Key3[int, i18n.Ter, error]("errors.test.three", "row %d, %s: %s")
+	ErrDup              = errors.Key("errors.test.dup", "duplicate", errors.Conflict)
+	ErrInheritKindFrame = errors.Key1[error]("errors.test.inherit_kind_frame", "x: %s")
+	ErrOwnKindFrame     = errors.Key1[error]("errors.test.own_kind_frame", "x: %s", errors.NotFound)
 )
+
+type stringKindErr struct {
+	msg  string
+	kind string
+}
+
+func (e stringKindErr) Error() string                    { return e.msg }
+func (e stringKindErr) T(context.Context, ...any) string { return e.msg }
+func (e stringKindErr) Kind() string                     { return e.kind }
 
 type ptrErr struct{}
 
@@ -306,6 +317,84 @@ func TestRules(t *testing.T) {
 		got := u.Unwrap()
 		if len(got) != 2 || got[0] != error(ErrDup) || got[1] != sql.ErrConnDone {
 			t.Errorf("Unwrap = %v, want the error arguments, then the cause", got)
+		}
+	})
+}
+
+func TestKindString(t *testing.T) {
+	eight := []struct {
+		name string
+		want errors.Kind
+	}{
+		{"internal", errors.Internal},
+		{"invalid", errors.Invalid},
+		{"unauthenticated", errors.Unauthenticated},
+		{"forbidden", errors.Forbidden},
+		{"not_found", errors.NotFound},
+		{"conflict", errors.Conflict},
+		{"rate_limited", errors.RateLimited},
+		{"unavailable", errors.Unavailable},
+	}
+
+	for _, tt := range eight {
+		t.Run(tt.name, func(t *testing.T) {
+			e := stringKindErr{msg: "item", kind: tt.name}
+			if got := errors.KindOf(e); got != tt.want {
+				t.Errorf("direct KindOf(%q) = %v, want %v", tt.name, got, tt.want)
+			}
+			wrapped := fmt.Errorf("wrap: %w", e)
+			if got := errors.KindOf(wrapped); got != tt.want {
+				t.Errorf("wrapped KindOf(%q) = %v, want %v", tt.name, got, tt.want)
+			}
+		})
+	}
+
+	t.Run("invalid names give Internal", func(t *testing.T) {
+		for _, name := range []string{"unspecified", "", "NotFound", "bogus"} {
+			e := stringKindErr{msg: "item", kind: name}
+			if got := errors.KindOf(e); got != errors.Internal {
+				t.Errorf("direct KindOf(%q) = %v, want Internal", name, got)
+			}
+			wrapped := fmt.Errorf("wrap: %w", e)
+			if got := errors.KindOf(wrapped); got != errors.Internal {
+				t.Errorf("wrapped KindOf(%q) = %v, want Internal", name, got)
+			}
+		}
+	})
+
+	t.Run("occurrence without own kind inherits string kind", func(t *testing.T) {
+		for _, tt := range eight {
+			e := stringKindErr{msg: "inner", kind: tt.name}
+			occ := ErrInheritKindFrame.With(e)
+			if got := errors.KindOf(occ); got != tt.want {
+				t.Errorf("inherited KindOf(%q) = %v, want %v", tt.name, got, tt.want)
+			}
+		}
+		e := stringKindErr{msg: "inner", kind: "bogus"}
+		occ := ErrInheritKindFrame.With(e)
+		if got := errors.KindOf(occ); got != errors.Internal {
+			t.Errorf("inherited KindOf(bogus) = %v, want Internal", got)
+		}
+	})
+
+	t.Run("a Wrap cause never lends its string kind", func(t *testing.T) {
+		e := stringKindErr{msg: "inner", kind: "not_found"}
+		if got := errors.KindOf(ErrOrderNotSaved.Wrap(e)); got != errors.Internal {
+			t.Errorf("KindOf(ErrOrderNotSaved.Wrap(not_found)) = %v, want Internal", got)
+		}
+	})
+
+	t.Run("occurrence with own kind wins", func(t *testing.T) {
+		for _, tt := range eight {
+			e := stringKindErr{msg: "inner", kind: tt.name}
+			occWith := ErrOwnKindFrame.With(e)
+			if got := errors.KindOf(occWith); got != errors.NotFound {
+				t.Errorf("occWith KindOf(%q) = %v, want NotFound", tt.name, got)
+			}
+			occWrap := ErrOrderNotFound.Wrap(e)
+			if got := errors.KindOf(occWrap); got != errors.NotFound {
+				t.Errorf("occWrap KindOf(%q) = %v, want NotFound", tt.name, got)
+			}
 		}
 	})
 }

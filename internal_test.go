@@ -92,3 +92,28 @@ func panicOf(f func()) (msg string) {
 	f()
 	return ""
 }
+
+func TestKindByName(t *testing.T) {
+	tests := []struct {
+		name string
+		want Kind
+	}{
+		{"internal", Internal},
+		{"invalid", Invalid},
+		{"unauthenticated", Unauthenticated},
+		{"forbidden", Forbidden},
+		{"not_found", NotFound},
+		{"conflict", Conflict},
+		{"rate_limited", RateLimited},
+		{"unavailable", Unavailable},
+		{"unspecified", 0},
+		{"", 0},
+		{"NotFound", 0},
+		{"bogus", 0},
+	}
+	for _, tt := range tests {
+		if got := kindByName(tt.name); got != tt.want {
+			t.Errorf("kindByName(%q) = %v, want %v", tt.name, got, tt.want)
+		}
+	}
+}
