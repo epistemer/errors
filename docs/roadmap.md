@@ -18,7 +18,9 @@
 - **Interface first.** M0 ends with the lock of `docs/interface.md`. After
   that a change to what an app writes or gets back is an amendment.
 - **Versions.** The first usable release is `v0.1.0`. `v1.0.0` waits until
-  zp's business code runs on it.
+  Confab uses this package's whole surface with no open bug or contradiction
+  finding against it ([neozp D2](https://github.com/epistemer/neozp/blob/main/docs/decisions.md),
+  2026-11-24); tagging it stays epistemer's call.
 - **Agents.** Claude owns the cross-cutting core (M1.3, M1.4, M2.1–M2.3)
   and reviews Gemini's work; Gemini, through agy, takes leaf items with a
   crisp done-when (M1.1, M1.2, M3.1). Each delegated item runs in its own
