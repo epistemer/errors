@@ -3,12 +3,25 @@
 Newest first. Every working session adds an entry: what landed, the decisions
 taken for you, what's next, and what's waiting on you.
 
-## 2026-11-24: amendment E1, Kind() string (v0.2.0)
+## 2026-11-24: amendment E1, `Kind() string` (v0.2.0)
 
-- **Landed:** amendment E1 in `show.go` and `kind.go`. `KindOf` reads a
-  `Kind() string` method returning any of the eight kind names.
-- **Decided for you:** nothing.
-- **Next:** `v0.2.0` release when approved.
+- **Asked for by** i18n's amendment I1, from Confab's finding F29: i18n's
+  errors answered 500 "something went wrong". errors imports i18n, so i18n
+  can't name `errors.Kind` and couldn't give its errors a kind.
+- **Decided by you:** E1 locked as drafted on 2026-11-24 (relayed through the
+  Confab session). `KindOf` also reads a `Kind() string` method naming one
+  of the eight kinds, as `Kind.String()` spells them; any other string,
+  `"unspecified"` included, counts as no kind (interface §5.7, §10).
+- **Landed:** `kindByName` in `kind.go` and the second check in `KindOf`
+  (`show.go`), with tests for the eight names directly and wrapped, unknown
+  names, inheritance through an occurrence's error argument, an
+  occurrence's own kind winning, and a `Wrap` cause never lending its kind.
+  Gemini 3.8 Flash (High) wrote it from a brief (about 161k tokens); Claude
+  reviewed it and added the `Wrap` test.
+- **Reviewed:** with i18n's change, by Gemini 4 Hydrogen (High) (Argon is
+  cooling down), about 173k tokens: no finding in this repository beyond
+  the `Wrap` test. An end-to-end check against i18n's branch gave 404, 400
+  and 409 for i18n's errors.
 - **Waiting on you:** nothing.
 
 ## 2026-11-14: the i18n amendment (alongside)

@@ -377,6 +377,13 @@ func TestKindString(t *testing.T) {
 		}
 	})
 
+	t.Run("a Wrap cause never lends its string kind", func(t *testing.T) {
+		e := stringKindErr{msg: "inner", kind: "not_found"}
+		if got := errors.KindOf(ErrOrderNotSaved.Wrap(e)); got != errors.Internal {
+			t.Errorf("KindOf(ErrOrderNotSaved.Wrap(not_found)) = %v, want Internal", got)
+		}
+	})
+
 	t.Run("occurrence with own kind wins", func(t *testing.T) {
 		for _, tt := range eight {
 			e := stringKindErr{msg: "inner", kind: tt.name}
